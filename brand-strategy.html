@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Strategy — Vision FX | Creative Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;450;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ag-black: #0a0a0a; --ag-white: #ffffff;
+            --ag-gray-muted: rgba(255, 255, 255, 0.5);
+            --ag-gray-light: rgba(255, 255, 255, 0.08);
+            --ag-gray-border: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --icon-badge-bg: rgba(255, 255, 255, 0.08);
+            --accent: #22a8d6; --accent-muted: rgba(34, 168, 214, 0.12);
+            --accent-border: rgba(34, 168, 214, 0.2); --accent-glow: rgba(34, 168, 214, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: "Google Sans", sans-serif; color: var(--ag-white); background: var(--ag-black); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 30%, rgba(34, 168, 214, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(34, 168, 214, 0.03) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+        header { position: fixed; top: 0; left: 0; right: 0; height: 80px; background: rgba(10, 10, 10, 0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1000; border-bottom: 0.8px solid var(--ag-gray-border); display: flex; align-items: center; transition: transform 0.3s ease; }
+        header.hidden { transform: translateY(-100%); }
+        .header-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .header-logo img { height: 72px; width: auto; object-fit: contain; }
+        nav { display: flex; align-items: center; gap: 32px; }
+        nav a { font-size: 14px; font-weight: 450; color: var(--ag-white); text-decoration: none; opacity: 0.7; transition: 0.2s; }
+        nav a:hover { opacity: 1; color: var(--accent); }
+        .nav-cta { background: var(--accent); color: #000; padding: 10px 24px; border-radius: 99px; font-weight: 500; text-decoration: none; font-size: 14px; }
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 10px; }
+        .menu-toggle span { display: block; width: 24px; height: 1.5px; background: #fff; margin: 6px 0; transition: 0.3s; }
+        .mobile-nav-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1001; opacity: 0; transition: 0.3s; }
+        .mobile-nav-overlay.active { display: block; opacity: 1; }
+        .mobile-nav-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 320px; background: #0a0a0a; border-left: 1px solid var(--ag-gray-border); z-index: 1002; transform: translateX(100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding: 40px; }
+        .mobile-nav-drawer.active { transform: translateX(0); }
+        .mobile-nav-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+        .mobile-nav-header img { height: 60px; }
+        .mobile-nav-close { background: none; border: none; color: #fff; cursor: pointer; }
+        .mobile-nav-links { list-style: none; }
+        .mobile-nav-links a { display: block; font-size: 24px; color: #fff; text-decoration: none; margin-bottom: 30px; font-weight: 450; }
+        section { padding: 120px 0; }
+        .hero { min-height: 95vh; display: flex; align-items: center; text-align: center; }
+        .hero-badge { display: inline-flex; background: var(--accent-muted); border: 0.8px solid var(--accent-border); border-radius: 99px; padding: 8px 24px; font-size: 14px; color: var(--accent); margin-bottom: 32px; letter-spacing: 1px; text-transform: uppercase; }
+        .hero h1 { font-size: clamp(48px, 9vw, 96px); line-height: 1.05; margin-bottom: 24px; letter-spacing: -3px; font-weight: 450; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 22px; color: var(--ag-gray-muted); max-width: 850px; margin: 0 auto 48px; line-height: 1.6; }
+        .grid-header { text-align: center; margin-bottom: 80px; }
+        .grid-header h2 { font-size: 56px; margin-bottom: 20px; letter-spacing: -1.5px; }
+        .grid-header p { color: var(--ag-gray-muted); font-size: 20px; max-width: 600px; margin: 0 auto; }
+        .service-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .f-card { background: var(--card-bg); border: 0.8px solid var(--ag-gray-border); padding: 56px 40px; border-radius: 32px; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); backdrop-filter: blur(10px); }
+        .f-card:hover { border-color: var(--accent); transform: translateY(-12px); background: rgba(255,255,255,0.06); }
+        .f-icon { width: 72px; height: 72px; background: var(--accent-muted); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; color: var(--accent); font-weight: 700; font-size: 24px; border: 1px solid var(--accent-border); }
+        .f-card h3 { font-size: 28px; margin-bottom: 20px; font-weight: 450; }
+        .f-card p { color: var(--ag-gray-muted); font-size: 17px; line-height: 1.7; }
+        .process-row { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: center; margin-bottom: 150px; }
+        .p-image { background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent); border-radius: 48px; aspect-ratio: 16/10; border: 0.8px solid var(--ag-gray-border); box-shadow: 0 40px 100px rgba(0,0,0,0.4); }
+        .p-text h4 { color: var(--accent); letter-spacing: 3px; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; }
+        .p-text h3 { font-size: 48px; margin-bottom: 28px; font-weight: 450; letter-spacing: -1px; }
+        .p-text p { font-size: 19px; color: var(--ag-gray-muted); line-height: 1.8; }
+        .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .p-card { background: var(--card-bg); border: 0.8px solid var(--ag-gray-border); padding: 56px; border-radius: 40px; transition: 0.4s; display: flex; flex-direction: column; }
+        .p-card.featured { border-color: var(--accent); background: radial-gradient(circle at top right, var(--accent-glow), transparent); transform: scale(1.05); }
+        .p-card .price { font-size: 56px; font-weight: 700; margin-bottom: 16px; letter-spacing: -2px; }
+        .p-card .price span { font-size: 18px; font-weight: 400; opacity: 0.5; }
+        .p-card h4 { font-size: 24px; margin-bottom: 8px; opacity: 0.9; }
+        .p-card p { margin-bottom: 40px; color: var(--ag-gray-muted); }
+        .p-card .p-btn { margin-top: auto; display: block; width: 100%; padding: 18px; border-radius: 99px; text-align: center; font-weight: 600; text-decoration: none; transition: 0.2s; }
+        .p-card.featured .p-btn { background: #fff; color: #000; }
+        .p-card .p-btn { border: 1px solid #333; color: #fff; }
+        .p-card .p-btn:hover { border-color: var(--accent); color: var(--accent); }
+        footer { background: #080808; border-top: 0.8px solid var(--ag-gray-border); padding: 120px 0 60px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 80px; }
+        .footer-brand img { height: 90px; margin-bottom: 32px; }
+        .footer-brand p { color: var(--ag-gray-muted); max-width: 350px; font-size: 16px; line-height: 1.7; }
+        .footer-col h4 { margin-bottom: 32px; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; color: #444; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 18px; }
+        .footer-links a { color: var(--ag-white); text-decoration: none; opacity: 0.5; transition: 0.3s; font-size: 15px; }
+        .footer-links a:hover { opacity: 1; color: var(--accent); padding-left: 6px; }
+        .footer-bottom { margin-top: 100px; border-top: 1px solid #111; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; color: #333; font-size: 14px; }
+        .footer-contact { display: flex; gap: 32px; }
+        .footer-contact a { color: #555; text-decoration: none; transition: 0.2s; }
+        .footer-contact a:hover { color: var(--accent); }
+        @media (max-width: 1100px) { .service-features, .packages-grid { grid-template-columns: 1fr 1fr; } .process-row { gap: 60px; } }
+        @media (max-width: 900px) { .header-inner nav { display: none; } .menu-toggle { display: block; } .service-features, .packages-grid, .process-row, .footer-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 56px; } .hero p { font-size: 18px; } .p-card.featured { transform: none; } .process-row { text-align: center; } }
+    </style>
+</head>
+<body>
+    <header id="header"><div class="header-inner"><a href="index.html" class="header-logo"><img src="LOGO.PNG.png" alt="Vision FX"></a><nav><a href="index.html#services">Services</a><a href="index.html#process">Process</a><a href="index.html#results">Results</a><a href="https://calendly.com/visionfxagency/30min" class="nav-cta" target="_blank">Book a Call</a></nav><button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button></div></header>
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div><div class="mobile-nav-drawer" id="mobileDrawer"><div class="mobile-nav-header"><img src="LOGO.PNG.png" alt="Vision FX"><button class="mobile-nav-close" id="mobileClose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><ul class="mobile-nav-links"><li><a href="index.html#services" class="mobile-link">Services</a></li><li><a href="index.html#process" class="mobile-link">Process</a></li><li><a href="index.html#results" class="mobile-link">Results</a></li><li><a href="https://calendly.com/visionfxagency/30min" class="mobile-link" target="_blank">Book Call</a></li></ul></div>
+    <main>
+        <section class="hero"><div class="container"><div class="hero-badge">The Roadmap</div><h1>Strategy for <span>Leaders</span></h1><p>Don't guess your path to growth. We build the scientific brand strategy that defines exactly how you will win your market.</p><a href="#packages" class="nav-cta" style="padding: 20px 56px; font-size: 18px; border-radius: 99px;">View Strategy Tiers</a></div></section>
+        <section><div class="container"><div class="grid-header"><h2>Core <span>Specialties</span></h2><p>Integrated solutions engineered for market dominance.</p></div><div class="service-features">
+            <div class="f-card"><div class="f-icon">01</div><h3>Insights</h3><p>Deep analysis of market white-space.</p></div>
+            <div class="f-card"><div class="f-icon">02</div><h3>Positioning</h3><p>The secret sauce that makes you unbeatable.</p></div>
+            <div class="f-card"><div class="f-icon">03</div><h3>Messaging Pillars</h3><p>The core things you say that drive the most revenue and trust.</p></div>
+        </div></div></section>
+        <section id="process"><div class="container"><div class="grid-header"><h2>The <span>Methodology</span></h2></div>
+            <div class="process-row"><div class="p-image"></div><div class="p-text"><h4>Phase 01</h4><h3>Workshop</h3><p>3-day intensive to extract brand DNA.</p></div></div>
+            <div class="process-row"><div class="p-image" style="order: 2"></div><div class="p-text" style="order: 1"><h4>Phase 02</h4><h3>The Playbook</h3><p>Final 100-page dominance roadmap.</p></div></div>
+        </div></section>
+        <section style="background: rgba(255,255,255,0.02); text-align: center;"><div class="container"><div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;" class="stats-row">
+            <div><h2 style="font-size: 64px; color: var(--accent); letter-spacing: -3px;">100%</h2><p style="color:var(--ag-gray-muted);text-transform:uppercase;letter-spacing:1px;font-size:12px">Team Alignment</p></div>
+            <div><h2 style="font-size: 64px; color: var(--accent); letter-spacing: -3px;">2x</h2><p style="color:var(--ag-gray-muted);text-transform:uppercase;letter-spacing:1px;font-size:12px">Marketing Efficiency</p></div>
+            <div><h2 style="font-size: 64px; color: var(--accent); letter-spacing: -3px;">Elite</h2><p style="color:var(--ag-gray-muted);text-transform:uppercase;letter-spacing:1px;font-size:12px">Market Share Gained</p></div>
+            <div><h2 style="font-size: 64px; color: var(--accent); letter-spacing: -3px;">Zero</h2><p style="color:var(--ag-gray-muted);text-transform:uppercase;letter-spacing:1px;font-size:12px">Guesswork Remaining</p></div>
+        </div></div></section>
+        <section id="packages"><div class="container"><div class="grid-header"><h2>Service <span>Investment</span></h2><p>Scalable packages designed for ROI-positive growth.</p></div><div class="packages-grid">
+            <div class="p-card"><h4>Growth Tier</h4><div class="price"><span>/mo</span></div><p>Entry-level elite services for ambitious players.</p><a href="#" class="p-btn">Start Scaling</a></div>
+            <div class="p-card featured"><h4>Standard Tier</h4><div class="price"><span>/mo</span></div><p>Our gold-standard offering for established leaders.</p><a href="#" class="p-btn">Secure Slot</a></div>
+            <div class="p-card"><h4>Elite Tier</h4><div class="price">+<span>/mo</span></div><p>Aggressive market dominance for industry titans.</p><a href="#" class="p-btn">Contact Sales</a></div>
+        </div></div></section>
+        <section style="background: radial-gradient(circle at 50% 50%, var(--accent-glow), transparent 70%); text-align: center;"><div class="container"><h2 style="font-size:64px;line-height:1.1;margin-bottom:24px">Ready to <span>Build Your Legacy?</span></h2><p style="margin-bottom: 48px; color: var(--ag-gray-muted);font-size:20px">Join the top 1% of brands scaling with Vision FX.</p><div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap"><a href="https://calendly.com/visionfxagency/30min" class="nav-cta" style="padding: 24px 60px;font-size:18px;border-radius:99px">Book Free Call</a><a href="mailto:visionfxagency@gmail.com" style="color:#fff;text-decoration:none;border:1px solid #333;padding:24px 60px;border-radius:99px;font-size:18px">Email Agency</a></div></div></section>
+    </main>
+    <footer><div class="container"><div class="footer-grid"><div class="footer-brand"><img src="LOGO.PNG.png" alt="Vision FX"><p>Building premium digital institutions since 2019. Full-service creative & marketing agency.</p></div><div class="footer-col"><h4>Solutions</h4><ul class="footer-links"><li><a href="social-media-marketing.html">Social Media</a></li><li><a href="web-design-development.html">Web Development</a></li><li><a href="seo.html">SEO Strategy</a></li></ul></div><div class="footer-col"><h4>Navigation</h4><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="index.html#services">Services</a></li><li><a href="index.html#process">Process</a></li></ul></div><div class="footer-col"><h4>Contact</h4><ul class="footer-links"><li><a href="mailto:visionfxagency@gmail.com">Email Us</a></li><li><a href="https://wa.me/6265372749" target="_blank">WhatsApp</a></li><li><a href="https://www.instagram.com/visionfx.co" target="_blank">Instagram</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 Vision FX Agency. Luxury Creative Execution.</p><div class="footer-contact"><a href="mailto:visionfxagency@gmail.com">visionfxagency@gmail.com</a><a href="https://wa.me/6265372749">WhatsApp</a></div></div></div></footer>
+    <script>
+        let lastScroll = 0; const head = document.getElementById('header'); window.addEventListener('scroll', () => { const currentScroll = window.pageYOffset; if (currentScroll > lastScroll && currentScroll > 100) { head.classList.add('hidden'); } else { head.classList.remove('hidden'); } lastScroll = currentScroll; });
+        const mt = document.getElementById('menuToggle'); const md = document.getElementById('mobileDrawer'); const mo = document.getElementById('mobileOverlay'); const mc = document.getElementById('mobileClose'); const mls = document.querySelectorAll('.mobile-link');
+        function oD() { md.classList.add('active'); mo.classList.add('active'); mt.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function cD() { md.classList.remove('active'); mo.classList.remove('active'); mt.classList.remove('active'); document.body.style.overflow = ''; }
+        mt.addEventListener('click', oD); mo.addEventListener('click', cD); mc.addEventListener('click', cD); mls.forEach(l => l.addEventListener('click', cD));
+    </script>
+</body>
+</html>
