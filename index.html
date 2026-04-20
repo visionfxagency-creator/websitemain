@@ -70,7 +70,7 @@
 
         .header-logo { display: flex; align-items: center; text-decoration: none; }
         .header-logo img {
-            height: 52px;
+            height: 72px;
             width: auto;
             object-fit: contain;
             display: block;
@@ -121,7 +121,7 @@
         .mobile-nav-drawer.active { transform: translateX(0); }
 
         .mobile-nav-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-        .mobile-nav-header img { height: 40px; width: auto; object-fit: contain; }
+        .mobile-nav-header img { height: 54px; width: auto; object-fit: contain; }
         .mobile-nav-close { background: none; border: none; cursor: pointer; color: var(--ag-white); padding: 4px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
 
         .mobile-nav-links { list-style: none; flex: 1; }
@@ -273,71 +273,90 @@
             border: 0.8px solid var(--ag-gray-border);
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate 20s linear infinite;
         }
-        .orbital-ring:nth-child(1) {
+        .orbital-ring-1 {
             width: 300px; height: 300px;
-            animation-duration: 25s;
+            animation: orbitCW 25s linear infinite;
         }
-        .orbital-ring:nth-child(2) {
+        .orbital-ring-2 {
             width: 420px; height: 420px;
-            animation-duration: 35s;
-            animation-direction: reverse;
+            animation: orbitCCW 35s linear infinite;
         }
-        .orbital-ring:nth-child(3) {
+        .orbital-ring-3 {
             width: 520px; height: 520px;
-            animation-duration: 45s;
+            animation: orbitCW 45s linear infinite;
         }
 
-        @keyframes rotate {
+        @keyframes orbitCW {
             from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+            to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes orbitCCW {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to   { transform: translate(-50%, -50%) rotate(-360deg); }
         }
 
-        /* Orbiting dots */
+        /* Orbiting dots — sit at top of each ring, travel with it */
         .orbit-dot {
             position: absolute;
             width: 8px; height: 8px;
             border-radius: 50%;
             background: var(--accent);
             box-shadow: 0 0 12px var(--accent);
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        .orbit-dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
-        .orbit-dot:nth-child(2) { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .orbit-dot:nth-child(3) { left: 0; top: 50%; transform: translateY(-50%); }
-        .orbit-dot:nth-child(4) { right: 0; top: 50%; transform: translateY(-50%); }
 
-        /* Floating service cards */
-        .float-card {
+        /* Floating service cards — anchored to outer ring */
+        /* The card wrapper rotates with the ring;             */
+        /* the inner card counter-rotates to stay upright.    */
+        .orbit-card-anchor {
             position: absolute;
-            background: rgba(255,255,255,0.04);
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+        }
+        .orbit-card-anchor.pos-tl { animation: orbitCW 45s linear infinite; animation-delay: 0s; }
+        .orbit-card-anchor.pos-tr { animation: orbitCW 45s linear infinite; animation-delay: -11.25s; }
+        .orbit-card-anchor.pos-br { animation: orbitCW 45s linear infinite; animation-delay: -22.5s; }
+        .orbit-card-anchor.pos-bl { animation: orbitCW 45s linear infinite; animation-delay: -33.75s; }
+
+        .float-card-wrapper {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        /* Counter-rotate content so text stays upright */
+        .orbit-card-anchor.pos-tl .float-card-wrapper { animation: counterCW 45s linear infinite; animation-delay: 0s; }
+        .orbit-card-anchor.pos-tr .float-card-wrapper { animation: counterCW 45s linear infinite; animation-delay: -11.25s; }
+        .orbit-card-anchor.pos-br .float-card-wrapper { animation: counterCW 45s linear infinite; animation-delay: -22.5s; }
+        .orbit-card-anchor.pos-bl .float-card-wrapper { animation: counterCW 45s linear infinite; animation-delay: -33.75s; }
+
+        @keyframes counterCW {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to   { transform: translateX(-50%) rotate(-360deg); }
+        }
+
+        .float-card {
+            background: rgba(255,255,255,0.06);
             border: 0.8px solid var(--ag-gray-border);
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            animation: float 6s ease-in-out infinite;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            white-space: nowrap;
         }
-        .float-card:nth-child(5) { top: 10%; left: -10%; animation-delay: 0s; }
-        .float-card:nth-child(6) { top: 25%; right: -8%; animation-delay: -1.5s; }
-        .float-card:nth-child(7) { bottom: 20%; left: -5%; animation-delay: -3s; }
-        .float-card:nth-child(8) { bottom: 8%; right: -12%; animation-delay: -4.5s; }
-
         .float-card svg {
-            width: 20px; height: 20px;
+            width: 18px; height: 18px;
             stroke: var(--accent); fill: none; stroke-width: 1.5;
             flex-shrink: 0;
         }
         .float-card span {
             font-size: 12px; font-weight: 450; color: var(--ag-white); white-space: nowrap;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
         }
 
         /* Central hexagon */
@@ -489,7 +508,7 @@
         }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 56px; }
         .footer-brand { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
-        .footer-brand img { height: 56px; width: auto; object-fit: contain; display: block; }
+        .footer-brand img { height: 84px; width: auto; object-fit: contain; display: block; }
         .footer-brand p { color: var(--ag-gray-muted); font-size: 14px; max-width: 300px; line-height: 1.6; }
         .footer-social { display: flex; gap: 12px; }
         .footer-social a {
@@ -545,7 +564,7 @@
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
             .header-inner { padding: 0 20px; }
-            .header-logo img { height: 42px; }
+            .header-logo img { height: 56px; }
 
             nav { display: none; }
             .menu-toggle { display: block; }
@@ -572,7 +591,7 @@
             .stat-item + .stat-item { border-top: 0.8px solid var(--ag-gray-border); }
 
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-            .footer-brand img { height: 48px; }
+            .footer-brand img { height: 64px; }
             .footer-bottom { flex-direction: column; text-align: center; }
             .footer-contact { flex-direction: column; gap: 8px; }
             .cta-buttons { flex-direction: column; align-items: center; }
@@ -674,16 +693,20 @@
                 <!-- Hero Visual - Right Side -->
                 <div class="hero-visual">
                     <div class="hero-graphic">
-                        <!-- Orbital rings -->
-                        <div class="orbital-ring"></div>
-                        <div class="orbital-ring"></div>
-                        <div class="orbital-ring"></div>
+                        <!-- Ring 1 (inner) — 300px, clockwise, with dot -->
+                        <div class="orbital-ring orbital-ring-1">
+                            <div class="orbit-dot"></div>
+                        </div>
 
-                        <!-- Orbit dots -->
-                        <div class="orbit-dot"></div>
-                        <div class="orbit-dot"></div>
-                        <div class="orbit-dot"></div>
-                        <div class="orbit-dot"></div>
+                        <!-- Ring 2 (middle) — 420px, counter-clockwise, with dot -->
+                        <div class="orbital-ring orbital-ring-2">
+                            <div class="orbit-dot"></div>
+                        </div>
+
+                        <!-- Ring 3 (outer) — 520px, clockwise, with dot -->
+                        <div class="orbital-ring orbital-ring-3">
+                            <div class="orbit-dot"></div>
+                        </div>
 
                         <!-- Central hexagon -->
                         <div class="hero-hex">
@@ -699,22 +722,39 @@
                             </svg>
                         </div>
 
-                        <!-- Floating service cards -->
-                        <div class="float-card">
-                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                            <span>Social Media</span>
+                        <!-- Orbiting service cards on the outer ring -->
+                        <!-- Each anchor rotates; inner wrapper counter-rotates to keep card upright -->
+                        <div class="orbit-card-anchor pos-tl">
+                            <div class="float-card-wrapper">
+                                <div class="float-card">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <span>Branding</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="float-card">
-                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <span>SEO Strategy</span>
+                        <div class="orbit-card-anchor pos-tr">
+                            <div class="float-card-wrapper">
+                                <div class="float-card">
+                                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                    <span>SEO Strategy</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="float-card">
-                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                            <span>Web Design</span>
+                        <div class="orbit-card-anchor pos-br">
+                            <div class="float-card-wrapper">
+                                <div class="float-card">
+                                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                                    <span>Web Design</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="float-card">
-                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <span>Branding</span>
+                        <div class="orbit-card-anchor pos-bl">
+                            <div class="float-card-wrapper">
+                                <div class="float-card">
+                                    <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                                    <span>Social Media</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
