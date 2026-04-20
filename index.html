@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision FX — Full-Service Creative Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;450;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ag-black: #0a0a0a;
+            --ag-white: #ffffff;
+            --ag-gray-muted: rgba(255, 255, 255, 0.5);
+            --ag-gray-light: rgba(255, 255, 255, 0.08);
+            --ag-gray-border: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --icon-badge-bg: rgba(255, 255, 255, 0.08);
+            --accent: #22a8d6;
+            --accent-muted: rgba(34, 168, 214, 0.12);
+            --accent-border: rgba(34, 168, 214, 0.2);
+            --accent-glow: rgba(34, 168, 214, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans Flex", "Google Sans", sans-serif;
+            color: var(--ag-white);
+            background: var(--ag-black);
+            line-height: 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 72px;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+            border-bottom: 0.8px solid var(--ag-gray-border);
+        }
+
+        header.hidden { transform: translateY(-100%); }
+
+        .header-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 56px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo { display: flex; align-items: center; text-decoration: none; }
+        .header-logo img {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        nav { display: flex; align-items: center; gap: 28px; }
+        nav a {
+            font-size: 14px; font-weight: 450;
+            letter-spacing: 0.11px; line-height: 21px;
+            color: var(--ag-white); text-decoration: none;
+            transition: opacity 0.15s ease-out;
+        }
+        nav a:hover { opacity: 0.7; }
+        nav .nav-cta {
+            background: var(--accent); color: #000;
+            padding: 8px 20px; border-radius: 9999px;
+            font-size: 14px; font-weight: 500;
+            transition: opacity 0.15s ease;
+        }
+        nav .nav-cta:hover { opacity: 0.88; }
+
+        /* Mobile hamburger */
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+        .menu-toggle span {
+            display: block; width: 22px; height: 2px;
+            background: var(--ag-white); margin: 5px 0;
+            border-radius: 2px; transition: all 0.25s ease;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile Drawer */
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); z-index: 999; opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-nav-overlay.active { display: block; opacity: 1; }
+
+        .mobile-nav-drawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 300px;
+            background: #0e0e10; border-left: 0.8px solid var(--ag-gray-border);
+            z-index: 1001; transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 24px; display: flex; flex-direction: column;
+        }
+        .mobile-nav-drawer.active { transform: translateX(0); }
+
+        .mobile-nav-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .mobile-nav-header img { height: 40px; width: auto; object-fit: contain; }
+        .mobile-nav-close { background: none; border: none; cursor: pointer; color: var(--ag-white); padding: 4px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
+
+        .mobile-nav-links { list-style: none; flex: 1; }
+        .mobile-nav-links li { border-bottom: 0.8px solid var(--ag-gray-border); }
+        .mobile-nav-links a { display: block; padding: 16px 0; color: var(--ag-white); text-decoration: none; font-size: 16px; font-weight: 450; transition: opacity 0.15s ease; }
+        .mobile-nav-links a:hover { opacity: 0.6; }
+
+        .mobile-nav-footer { border-top: 0.8px solid var(--ag-gray-border); padding-top: 20px; }
+        .mobile-nav-footer .mobile-socials { display: flex; gap: 12px; justify-content: center; margin-bottom: 16px; }
+
+        .mobile-social-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--ag-gray-light); border: 0.8px solid var(--ag-gray-border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--ag-gray-muted); transition: all 0.15s ease; text-decoration: none;
+        }
+        .mobile-social-btn:hover { background: var(--accent-muted); border-color: var(--accent-border); color: var(--accent); }
+        .mobile-social-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .mobile-book-btn {
+            display: block; background: var(--accent); color: #000;
+            text-align: center; padding: 14px; border-radius: 9999px;
+            font-size: 15px; font-weight: 500; text-decoration: none; transition: opacity 0.15s ease;
+        }
+        .mobile-book-btn:hover { opacity: 0.88; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 28px; border-radius: 9999px;
+            font-size: 16px; font-weight: 450; letter-spacing: 0.15px; line-height: 1;
+            text-decoration: none; border: none; cursor: pointer; transition: all 0.15s ease-out;
+        }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { opacity: 0.88; }
+        .btn-secondary { background: var(--ag-gray-light); color: var(--ag-white); border: 0.8px solid var(--ag-gray-border); }
+        .btn-secondary:hover { opacity: 0.85; }
+        .btn-accent-outline { background: transparent; color: var(--accent); border: 0.8px solid var(--accent-border); }
+        .btn-accent-outline:hover { background: var(--accent-muted); }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        section { padding: 100px 0; }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            padding-top: 72px;
+            padding-bottom: 60px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-content { max-width: 620px; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-muted); border: 0.8px solid var(--accent-border);
+            border-radius: 9999px; padding: 6px 16px;
+            font-size: 13px; font-weight: 450; color: var(--accent);
+            letter-spacing: 0.3px; margin-bottom: 28px;
+        }
+        .hero-badge .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 5vw, 68px);
+            font-weight: 450; line-height: 1.06;
+            margin-bottom: 24px; letter-spacing: -1.5px;
+        }
+        .hero h1 span { color: var(--accent); }
+
+        .hero p {
+            font-size: 17px; color: var(--ag-gray-muted);
+            margin-bottom: 36px; max-width: 520px; line-height: 1.6;
+        }
+
+        .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+
+        .hero-meta { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-bottom: 48px; }
+        .hero-meta-item { display: flex; align-items: center; gap: 8px; color: var(--ag-gray-muted); font-size: 14px; }
+        .hero-meta-item svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+        .hero-trust { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .hero-trust-label {
+            font-size: 12px; color: rgba(255,255,255,0.3);
+            text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap;
+        }
+        .hero-trust-logos { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .hero-trust-logos span {
+            font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.2); font-style: italic;
+        }
+
+        /* Hero Right - Tech Graphic */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 500px;
+        }
+
+        .hero-graphic {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            aspect-ratio: 1;
+        }
+
+        /* Central glow circle */
+        .hero-graphic::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Orbital rings */
+        .orbital-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 0.8px solid var(--ag-gray-border);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 20s linear infinite;
+        }
+        .orbital-ring:nth-child(1) {
+            width: 300px; height: 300px;
+            animation-duration: 25s;
+        }
+        .orbital-ring:nth-child(2) {
+            width: 420px; height: 420px;
+            animation-duration: 35s;
+            animation-direction: reverse;
+        }
+        .orbital-ring:nth-child(3) {
+            width: 520px; height: 520px;
+            animation-duration: 45s;
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Orbiting dots */
+        .orbit-dot {
+            position: absolute;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+        .orbit-dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .orbit-dot:nth-child(2) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .orbit-dot:nth-child(3) { left: 0; top: 50%; transform: translateY(-50%); }
+        .orbit-dot:nth-child(4) { right: 0; top: 50%; transform: translateY(-50%); }
+
+        /* Floating service cards */
+        .float-card {
+            position: absolute;
+            background: rgba(255,255,255,0.04);
+            border: 0.8px solid var(--ag-gray-border);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: float 6s ease-in-out infinite;
+        }
+        .float-card:nth-child(5) { top: 10%; left: -10%; animation-delay: 0s; }
+        .float-card:nth-child(6) { top: 25%; right: -8%; animation-delay: -1.5s; }
+        .float-card:nth-child(7) { bottom: 20%; left: -5%; animation-delay: -3s; }
+        .float-card:nth-child(8) { bottom: 8%; right: -12%; animation-delay: -4.5s; }
+
+        .float-card svg {
+            width: 20px; height: 20px;
+            stroke: var(--accent); fill: none; stroke-width: 1.5;
+            flex-shrink: 0;
+        }
+        .float-card span {
+            font-size: 12px; font-weight: 450; color: var(--ag-white); white-space: nowrap;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Central hexagon */
+        .hero-hex {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px; height: 120px;
+            z-index: 2;
+        }
+        .hero-hex svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 20px var(--accent-glow));
+        }
+
+        /* Grid dots background */
+        .hero-grid {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* ========== SERVICES ========== */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .service-card {
+            background: var(--card-bg); border: 0.8px solid var(--ag-gray-border);
+            border-radius: 20px; padding: 28px;
+            transition: transform 0.15s ease-out, border-color 0.15s ease;
+        }
+        .service-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); }
+        .icon-badge {
+            width: 88px; height: 88px; border-radius: 50%;
+            background: var(--icon-badge-bg);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+        }
+        .icon-badge svg { width: 36px; height: 36px; stroke: var(--accent); stroke-width: 1.8; fill: none; }
+        .service-card h3 { font-size: 20px; font-weight: 450; margin-bottom: 10px; }
+        .service-card p { color: var(--ag-gray-muted); font-size: 14px; line-height: 1.5; }
+
+        /* Process */
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        .process-step { padding: 40px 32px; position: relative; border-right: 0.8px solid var(--ag-gray-border); }
+        .process-step:last-child { border-right: none; }
+        .process-num { font-size: 48px; font-weight: 450; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 16px; }
+        .process-step h3 { font-size: 18px; font-weight: 450; margin-bottom: 10px; }
+        .process-step p { color: var(--ag-gray-muted); font-size: 14px; line-height: 1.5; }
+        .process-step .accent-bar { width: 32px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 20px; }
+
+        /* Stats */
+        .stats-section {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            border-top: 0.8px solid var(--ag-gray-border);
+            border-bottom: 0.8px solid var(--ag-gray-border);
+        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        .stat-item { padding: 48px 32px; text-align: center; position: relative; }
+        .stat-item + .stat-item::before {
+            content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+            width: 0.8px; background: var(--ag-gray-border);
+        }
+        .stat-item h2 { font-size: 52px; font-weight: 450; line-height: 1; margin-bottom: 8px; }
+        .stat-item h2 span { color: var(--accent); }
+        .stat-item p { color: var(--accent); font-size: 13px; font-weight: 450; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .feature-card {
+            background: var(--card-bg); border: 0.8px solid var(--ag-gray-border);
+            border-radius: 20px; padding: 32px; display: flex; flex-direction: column;
+        }
+        .feature-card:hover { border-color: rgba(255,255,255,0.12); }
+        .feature-icon {
+            width: 72px; height: 72px; border-radius: 16px;
+            background: var(--icon-badge-bg);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+        }
+        .feature-icon svg { width: 32px; height: 32px; stroke: var(--accent); stroke-width: 1.8; fill: none; }
+        .feature-card h3 { font-size: 22px; font-weight: 450; margin-bottom: 12px; }
+        .feature-card p { color: var(--ag-gray-muted); font-size: 14px; line-height: 1.6; flex: 1; margin-bottom: 24px; }
+
+        /* Testimonials */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .testimonial-card {
+            background: var(--card-bg); border: 0.8px solid var(--ag-gray-border);
+            border-radius: 20px; padding: 28px;
+        }
+        .testimonial-card:hover { border-color: rgba(255,255,255,0.12); }
+        .testimonial-card .stars { margin-bottom: 16px; color: var(--accent); font-size: 14px; letter-spacing: 2px; }
+        .testimonial-card blockquote { font-size: 15px; margin-bottom: 24px; line-height: 1.6; color: rgba(255,255,255,0.8); }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .testimonial-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--accent-muted); border: 0.8px solid var(--accent-border);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 500; font-size: 13px; color: var(--accent);
+        }
+        .testimonial-info h4 { font-size: 14px; font-weight: 450; }
+        .testimonial-info p { font-size: 12px; color: var(--ag-gray-muted); }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(34, 168, 214, 0.03) 50%, transparent);
+        }
+        .cta-section h2 { font-size: clamp(32px, 4vw, 52px); font-weight: 450; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+        .cta-section h2 span { color: var(--accent); }
+        .cta-section p { color: var(--ag-gray-muted); margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; font-size: 16px; }
+        .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        /* Blog */
+        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .blog-card {
+            background: var(--card-bg); border: 0.8px solid var(--ag-gray-border);
+            border-radius: 20px; overflow: hidden;
+            transition: transform 0.15s ease-out, border-color 0.15s ease;
+        }
+        .blog-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); }
+        .blog-card .blog-image {
+            width: 100%; height: 180px;
+            background: linear-gradient(135deg, var(--icon-badge-bg), rgba(34, 168, 214, 0.05));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .blog-card .blog-image svg { width: 40px; height: 40px; stroke: var(--accent); stroke-width: 1.5; fill: none; opacity: 0.5; }
+        .blog-content { padding: 24px; }
+        .blog-tag {
+            display: inline-block; padding: 4px 12px;
+            background: var(--accent-muted); border-radius: 9999px;
+            font-size: 11px; font-weight: 500; color: var(--accent);
+            margin-bottom: 12px; letter-spacing: 0.3px;
+        }
+        .blog-card h3 { font-size: 17px; font-weight: 450; margin-bottom: 8px; line-height: 1.3; }
+        .blog-card p { color: var(--ag-gray-muted); font-size: 13px; }
+
+        /* Marquee strip */
+        .marquee-strip { padding: 32px 0; border-top: 0.8px solid var(--ag-gray-border); border-bottom: 0.8px solid var(--ag-gray-border); overflow: hidden; }
+        .marquee-track { display: flex; gap: 48px; animation: marquee 30s linear infinite; white-space: nowrap; }
+        .marquee-track span { font-size: 14px; color: rgba(255,255,255,0.15); text-transform: uppercase; letter-spacing: 2px; flex-shrink: 0; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Footer */
+        footer {
+            background: #080808;
+            border-top: 0.8px solid var(--ag-gray-border);
+            padding: 80px 0 48px;
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 56px; }
+        .footer-brand { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+        .footer-brand img { height: 56px; width: auto; object-fit: contain; display: block; }
+        .footer-brand p { color: var(--ag-gray-muted); font-size: 14px; max-width: 300px; line-height: 1.6; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--ag-gray-light); border: 0.8px solid var(--ag-gray-border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--ag-gray-muted); transition: all 0.15s ease;
+        }
+        .footer-social a:hover { background: var(--accent-muted); border-color: var(--accent-border); color: var(--accent); }
+        .footer-social a svg { width: 16px; height: 16px; fill: currentColor; }
+        .footer-col h4 { font-size: 13px; font-weight: 500; margin-bottom: 20px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.8px; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 12px; }
+        .footer-col a { color: var(--ag-gray-muted); text-decoration: none; font-size: 14px; transition: color 0.15s ease; }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom { border-top: 0.8px solid var(--ag-gray-border); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-bottom p { color: rgba(255,255,255,0.3); font-size: 13px; }
+        .footer-contact { display: flex; gap: 20px; align-items: center; }
+        .footer-contact a { color: var(--ag-gray-muted); font-size: 13px; text-decoration: none; transition: color 0.15s ease; }
+        .footer-contact a:hover { color: var(--accent); }
+
+        /* Section headers */
+        .section-header { text-align: center; margin-bottom: 56px; }
+        .section-header h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 450; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 14px; }
+        .section-header h2 span { color: var(--accent); }
+        .section-header p { color: var(--ag-gray-muted); max-width: 560px; margin: 0 auto; font-size: 15px; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container { padding: 0 40px; }
+            .header-inner { padding: 0 40px; }
+            .hero-inner { gap: 48px; }
+            .hero-graphic { max-width: 400px; }
+        }
+
+        @media (max-width: 1100px) {
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .process-step { border-bottom: 0.8px solid var(--ag-gray-border); }
+            .process-step:nth-child(2n) { border-right: none; }
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-visual { display: none; }
+            .hero-content { max-width: 100%; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-grid, .blog-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-item + .stat-item::before { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .header-inner { padding: 0 20px; }
+            .header-logo img { height: 42px; }
+
+            nav { display: none; }
+            .menu-toggle { display: block; }
+            .mobile-nav-overlay { display: block; pointer-events: none; }
+            .mobile-nav-overlay.active { pointer-events: all; }
+
+            section { padding: 72px 0; }
+
+            .hero h1 { font-size: 36px; letter-spacing: -0.5px; }
+            .hero p { font-size: 15px; }
+            .hero-buttons { flex-direction: column; align-items: flex-start; }
+            .hero-meta { gap: 20px; }
+            .hero-trust { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+            .section-header h2 { font-size: 30px; }
+
+            .services-grid, .features-grid, .testimonials-grid, .blog-grid, .process-grid { grid-template-columns: 1fr; }
+            .process-step { border-right: none; border-bottom: 0.8px solid var(--ag-gray-border); padding: 28px 0; }
+            .process-step:last-child { border-bottom: none; }
+
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
+            .stat-item { padding: 32px 20px; }
+            .stat-item::before { display: none; }
+            .stat-item + .stat-item { border-top: 0.8px solid var(--ag-gray-border); }
+
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-brand img { height: 48px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-contact { flex-direction: column; gap: 8px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="header-inner">
+            <a href="#" class="header-logo"><img src="LOGO.PNG.png" alt="Vision FX"></a>
+            <nav>
+                <a href="#services">Services</a>
+                <a href="#process">Process</a>
+                <a href="#results">Results</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="https://calendly.com/visionfxagency/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denngpwy9eua&month=2026-04" class="nav-cta" target="_blank">Book a Call</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileDrawer">
+        <div class="mobile-nav-header">
+            <img src="LOGO.PNG.png" alt="Vision FX">
+            <button class="mobile-nav-close" id="mobileClose" aria-label="Close menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#services" class="mobile-link">Services</a></li>
+            <li><a href="#process" class="mobile-link">Process</a></li>
+            <li><a href="#results" class="mobile-link">Results</a></li>
+            <li><a href="#testimonials" class="mobile-link">Testimonials</a></li>
+            <li><a href="#blog" class="mobile-link">Blog</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <div class="mobile-socials">
+                <a href="https://www.instagram.com/visionfx.co?igsh=MTZrYW1jYWYzM3BpNQ==" target="_blank" class="mobile-social-btn" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://youtube.com/@visionfx.c?si=JZbbgoOOIDz9dk6-" target="_blank" class="mobile-social-btn" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+                </a>
+                <a href="https://wa.me/6265372749" target="_blank" class="mobile-social-btn" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+            </div>
+            <a href="https://calendly.com/visionfxagency/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denngpwy9eua&month=2026-04" target="_blank" class="mobile-book-btn">Book Free Consultation</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Full-Service Creative Agency
+                    </div>
+                    <h1>Build a Brand That <span>Stands Out</span></h1>
+                    <p>From visual identity to digital growth — we craft strategies that transform ambitious brands into market leaders. Strategy, design, and marketing under one roof.</p>
+                    <div class="hero-buttons">
+                        <a href="https://calendly.com/visionfxagency/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denngpwy9eua&month=2026-04" class="btn btn-primary" target="_blank">Book Free Consultation</a>
+                        <a href="#services" class="btn btn-secondary">Explore Services</a>
+                    </div>
+                    <div class="hero-meta">
+                        <div class="hero-meta-item">
+                            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            Free Strategy Session
+                        </div>
+                        <div class="hero-meta-item">
+                            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            500+ Brands Transformed
+                        </div>
+                        <div class="hero-meta-item">
+                            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            98% Client Retention
+                        </div>
+                    </div>
+                    <div class="hero-trust">
+                        <span class="hero-trust-label">Trusted by teams at</span>
+                        <div class="hero-trust-logos">
+                            <span>TechStart</span>
+                            <span>ScaleUp</span>
+                            <span>D2C Co</span>
+                            <span>SaaS Labs</span>
+                            <span>GrowthX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Visual - Right Side -->
+                <div class="hero-visual">
+                    <div class="hero-graphic">
+                        <!-- Orbital rings -->
+                        <div class="orbital-ring"></div>
+                        <div class="orbital-ring"></div>
+                        <div class="orbital-ring"></div>
+
+                        <!-- Orbit dots -->
+                        <div class="orbit-dot"></div>
+                        <div class="orbit-dot"></div>
+                        <div class="orbit-dot"></div>
+                        <div class="orbit-dot"></div>
+
+                        <!-- Central hexagon -->
+                        <div class="hero-hex">
+                            <svg viewBox="0 0 120 120" fill="none">
+                                <polygon points="60,5 110,32.5 110,87.5 60,115 10,87.5 10,32.5"
+                                    stroke="#22a8d6" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <polygon points="60,20 95,42.5 95,77.5 60,100 25,77.5 25,42.5"
+                                    stroke="#22a8d6" stroke-width="1" fill="rgba(34,168,214,0.08)" opacity="0.6"/>
+                                <polygon points="60,38 80,52.5 80,67.5 60,82 40,67.5 40,52.5"
+                                    stroke="#22a8d6" stroke-width="1.5" fill="rgba(34,168,214,0.12)" opacity="0.8"/>
+                                <circle cx="60" cy="60" r="12" fill="#22a8d6" opacity="0.9"/>
+                                <circle cx="60" cy="60" r="6" fill="#ffffff" opacity="0.9"/>
+                            </svg>
+                        </div>
+
+                        <!-- Floating service cards -->
+                        <div class="float-card">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <span>Social Media</span>
+                        </div>
+                        <div class="float-card">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <span>SEO Strategy</span>
+                        </div>
+                        <div class="float-card">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                            <span>Web Design</span>
+                        </div>
+                        <div class="float-card">
+                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <span>Branding</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Strip -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <span>Social Media Marketing</span><span>•</span>
+            <span>Web Design & Development</span><span>•</span>
+            <span>SEO & Content Strategy</span><span>•</span>
+            <span>Graphic Design</span><span>•</span>
+            <span>Influencer Marketing</span><span>•</span>
+            <span>Paid Advertising</span><span>•</span>
+            <span>Email Marketing</span><span>•</span>
+            <span>Visual Identity</span><span>•</span>
+            <span>Brand Strategy</span><span>•</span>
+            <span>Logo Design</span><span>•</span>
+            <span>Personal Branding</span><span>•</span>
+            <span>Social Media Marketing</span><span>•</span>
+            <span>Web Design & Development</span><span>•</span>
+            <span>SEO & Content Strategy</span><span>•</span>
+            <span>Graphic Design</span><span>•</span>
+            <span>Influencer Marketing</span><span>•</span>
+            <span>Paid Advertising</span><span>•</span>
+            <span>Email Marketing</span><span>•</span>
+            <span>Visual Identity</span><span>•</span>
+            <span>Brand Strategy</span><span>•</span>
+            <span>Logo Design</span><span>•</span>
+            <span>Personal Branding</span><span>•</span>
+        </div>
+    </div>
+
+    <section id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Services That <span>Drive Growth</span></h2>
+                <p>Comprehensive creative and marketing solutions tailored to accelerate your brand in the digital landscape.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+                    <h3>Social Media Marketing</h3>
+                    <p>Build engaged communities across platforms with strategic content, community management, and growth-focused campaigns.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+                    <h3>Content Marketing</h3>
+                    <p>Compelling content that converts. From viral videos to thought leadership articles — we tell stories that sell.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+                    <h3>SEO</h3>
+                    <p>Dominate search rankings with proven SEO strategies. Technical audits, content optimization, and authority building.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+                    <h3>Web Design & Development</h3>
+                    <p>High-performance websites built to convert. Modern design, fast load times, and seamless user experiences.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+                    <h3>Graphic Design</h3>
+                    <p>Stunning visuals that define your brand. From social graphics to presentation decks — design that gets noticed.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <h3>Influencer Marketing</h3>
+                    <p>Connect with your audience through trusted voices. We identify, contact, and manage influencer partnerships that deliver ROI.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                    <h3>Email Marketing</h3>
+                    <p>Nurture leads into customers with automated email sequences. Segmentation, personalization, and deliverability optimization.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                    <h3>Paid Advertising</h3>
+                    <p>Maximize ROI with precision-targeted campaigns across Google, Meta, and LinkedIn. Every dollar tracked and optimized.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <h3>Visual Identity</h3>
+                    <p>Distinctive brand identities that leave a lasting impression. Logo, color palette, typography, and brand guidelines.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    <h3>Personal Branding</h3>
+                    <p>Position yourself as an industry authority. Strategy, content, and visual presence that builds your professional brand.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                    <h3>Logo Design</h3>
+                    <p>Memorable logos that capture your brand's essence. Research-driven, distinctive, and ready for any application.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+                    <h3>Brand Strategy</h3>
+                    <p>Foundation-first brand strategy. Market research, positioning, messaging, and competitive analysis to guide every decision.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                    <h3>Environments Design</h3>
+                    <p>Planning and design for physical brand spaces. Storefronts, event booths, office branding — environments that speak.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg></div>
+                    <h3>Illustration</h3>
+                    <p>Custom illustrations that bring your brand to life. Unique artwork for packaging, digital, and print applications.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                    <h3>Mascot Design</h3>
+                    <p>Character-driven brand mascots that build recognition and emotional connection. From concepts to delivery-ready assets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process">
+        <div class="container">
+            <div class="section-header">
+                <h2>How We <span>Work</span></h2>
+                <p>A proven four-step process that takes your brand from concept to market leadership.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="accent-bar"></div>
+                    <div class="process-num">01</div>
+                    <h3>Discovery</h3>
+                    <p>We dive deep into your brand, market, and goals. Every strategy starts with understanding — not assumptions.</p>
+                </div>
+                <div class="process-step">
+                    <div class="accent-bar"></div>
+                    <div class="process-num">02</div>
+                    <h3>Strategy</h3>
+                    <p>We build a custom roadmap tailored to your audience, competitive landscape, and growth targets.</p>
+                </div>
+                <div class="process-step">
+                    <div class="accent-bar"></div>
+                    <div class="process-num">03</div>
+                    <h3>Execute</h3>
+                    <p>Our creative and marketing teams execute with precision. Fast, focused, and aligned to your KPIs.</p>
+                </div>
+                <div class="process-step">
+                    <div class="accent-bar"></div>
+                    <div class="process-num">04</div>
+                    <h3>Optimize</h3>
+                    <p>We measure, analyze, and refine. Continuous improvement backed by real data and real results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="results" class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h2>500<span>+</span></h2>
+                    <p>Brands Transformed</p>
+                </div>
+                <div class="stat-item">
+                    <h2>$2.4<span>M</span></h2>
+                    <p>Revenue Generated</p>
+                </div>
+                <div class="stat-item">
+                    <h2>340<span>%</span></h2>
+                    <p>Avg. Traffic Growth</p>
+                </div>
+                <div class="stat-item">
+                    <h2>98<span>%</span></h2>
+                    <p>Client Retention</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Brands <span>Choose Us</span></h2>
+                <p>A strategic creative partner committed to your success — not just deliverables.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg></div>
+                    <h3>Data-Driven Strategy</h3>
+                    <p>Every decision backed by rigorous analysis. We don't guess — we test, measure, and optimize relentlessly to deliver measurable results.</p>
+                    <a href="#contact" class="btn btn-secondary">Learn More</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                    <h3>Rapid Execution</h3>
+                    <p>From strategy to launch in days, not months. Our agile methodology means you see results faster without sacrificing quality.</p>
+                    <a href="#contact" class="btn btn-secondary">Learn More</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <h3>Dedicated Creative Teams</h3>
+                    <p>A named team for every client. Senior strategists and designers, not juniors learning on your budget. Real partners, real investment.</p>
+                    <a href="#contact" class="btn btn-secondary">Learn More</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                    <h3>Transparent Reporting</h3>
+                    <p>Real-time dashboards, weekly updates, monthly strategy reviews. Full visibility into every decision, every dollar, every result.</p>
+                    <a href="#contact" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by <span>Growth Teams</span></h2>
+                <p>Don't take our word for it — hear from the brands we've helped scale.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"Vision FX transformed our brand identity from scratch. The team understood our vision and executed beyond expectations."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AK</div>
+                        <div class="testimonial-info">
+                            <h4>Alex Kim</h4>
+                            <p>Founder, TechStart Inc</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"The social media strategy they built drove a 4x increase in engagement. Finally an agency that delivers real results."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MR</div>
+                        <div class="testimonial-info">
+                            <h4>Maria Rodriguez</h4>
+                            <p>Marketing Director, D2C Brand</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"From logo design to web development, Vision FX handled everything. Consistent quality and genuine investment in our success."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JL</div>
+                        <div class="testimonial-info">
+                            <h4>James Liu</h4>
+                            <p>CEO, SaaS Ventures</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Insights & <span>Resources</span></h2>
+                <p>Stay ahead with our latest strategies, case studies, and industry analysis.</p>
+            </div>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+                    <div class="blog-content">
+                        <span class="blog-tag">SEO</span>
+                        <h3>The 2026 SEO Playbook: Core Web Vitals & Beyond</h3>
+                        <p>Everything you need to rank in the age of AI search.</p>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+                    <div class="blog-content">
+                        <span class="blog-tag">BRANDING</span>
+                        <h3>How to Build a Brand That Outlasts Trends</h3>
+                        <p>Timeless strategies for lasting brand equity.</p>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                    <div class="blog-content">
+                        <span class="blog-tag">PAID ADS</span>
+                        <h3>Meta Ads in 2026: The Complete Conversion Guide</h3>
+                        <p>Proven creative frameworks that actually convert.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="cta-section">
+        <div class="container">
+            <h2>Ready to Build Your <span>Brand?</span></h2>
+            <p>Let's create something extraordinary together. Schedule a free strategy session with our team and let's get started.</p>
+            <div class="cta-buttons">
+                <a href="https://calendly.com/visionfxagency/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denngpwy9eua&month=2026-04" class="btn btn-primary" target="_blank">Book Free Consultation</a>
+                <a href="https://wa.me/6265372749" class="btn btn-accent-outline" target="_blank">WhatsApp Us</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="LOGO.PNG.png" alt="Vision FX">
+                    <p>Engineering growth for ambitious brands since 2019. Full-service creative and digital marketing agency.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/visionfx.co?igsh=MTZrYW1jYWYzM3BpNQ==" target="_blank" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="https://youtube.com/@visionfx.c?si=JZbbgoOOIDz9dk6-" target="_blank" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+                        </a>
+                        <a href="https://wa.me/6265372749" target="_blank" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Social Media</a></li>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">SEO</a></li>
+                        <li><a href="#services">Graphic Design</a></li>
+                        <li><a href="#services">Brand Strategy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="https://calendly.com/visionfxagency/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denngpwy9eua&month=2026-04" target="_blank">Book a Call</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:visionfxagency@gmail.com">visionfxagency@gmail.com</a></li>
+                        <li><a href="https://wa.me/6265372749" target="_blank">+1 626 537 2749</a></li>
+                        <li><a href="https://www.instagram.com/visionfx.co?igsh=MTZrYW1jYWYzM3BpNQ==" target="_blank">@visionfx.co</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Vision FX. All rights reserved.</p>
+                <div class="footer-contact">
+                    <a href="mailto:visionfxagency@gmail.com">visionfxagency@gmail.com</a>
+                    <a href="https://wa.me/6265372749" target="_blank">WhatsApp Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let lastScroll = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileClose = document.getElementById('mobileClose');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openDrawer() {
+            mobileDrawer.classList.add('active');
+            mobileOverlay.classList.add('active');
+            menuToggle.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDrawer() {
+            mobileDrawer.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', () => {
+            if (mobileDrawer.classList.contains('active')) { closeDrawer(); } else { openDrawer(); }
+        });
+        mobileOverlay.addEventListener('click', closeDrawer);
+        mobileClose.addEventListener('click', closeDrawer);
+        mobileLinks.forEach(link => { link.addEventListener('click', closeDrawer); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileDrawer.classList.contains('active')) { closeDrawer(); }
+        });
+    </script>
+</body>
+</html>
